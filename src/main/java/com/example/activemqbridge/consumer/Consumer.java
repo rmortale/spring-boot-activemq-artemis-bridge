@@ -1,7 +1,6 @@
 package com.example.activemqbridge.consumer;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
@@ -10,22 +9,22 @@ import org.springframework.stereotype.Component;
 public class Consumer {
 
     @Autowired
-    @Qualifier("templ1")
-    private JmsTemplate template1;
+    private JmsTemplate activemqTempl;
 
     @Autowired
-    @Qualifier("templ2")
-    private JmsTemplate template2;
+    private JmsTemplate artemisTempl;
 
-    @JmsListener(destination = "mailbox", containerFactory = "cf1ListenerContainerFactory")
-    public void receiveMessageFromcf1(String email) {
+    @JmsListener(destination = "mailbox",
+            containerFactory = "activemqListenerContainerFactory")
+    public void receiveMessageFromActivemq(String email) {
         System.out.println("Received message from qm1");
-        template2.convertAndSend("mailbox1", "from qm1");
+        artemisTempl.convertAndSend("mailbox1", "from qm1");
     }
 
-    @JmsListener(destination = "mailbox", containerFactory = "cf2ListenerContainerFactory")
-    public void receiveMessageFromCf2(String email) {
+    @JmsListener(destination = "mailbox",
+            containerFactory = "artemisListenerContainerFactory")
+    public void receiveMessageFromArtemis(String email) {
         System.out.println("Received message from qm2");
-        template1.convertAndSend("mailbox2", "from qm2");
+        activemqTempl.convertAndSend("mailbox2", "from qm2");
     }
 }

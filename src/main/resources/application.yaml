@@ -1,0 +1,11 @@
+
+
+broker:
+  artemis:
+    url: tcp://localhost:61616
+    username: admin
+    password: admin
+  activemq:
+    url: tcp://localhost:61616
+    username: admin
+    password: admin
